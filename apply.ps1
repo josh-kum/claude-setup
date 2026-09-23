@@ -80,6 +80,22 @@ foreach ($p in $manifest.disabledPlugins) {
 }
 $settings.theme = $manifest.theme
 
+# Plugin configs (e.g. jev-skill-suggestion's inject mode) - shallow-merge
+# options per plugin so a locally-set option not in the manifest survives.
+if ($manifest.pluginConfigs) {
+    if (-not $settings.pluginConfigs) { $settings | Add-Member -NotePropertyName pluginConfigs -NotePropertyValue ([PSCustomObject]@{}) -Force }
+    foreach ($pluginName in $manifest.pluginConfigs.PSObject.Properties.Name) {
+        if ($pluginName -eq "note") { continue }
+        $wantedOptions = $manifest.pluginConfigs.$pluginName.options
+        if (-not $settings.pluginConfigs.PSObject.Properties[$pluginName]) {
+            $settings.pluginConfigs | Add-Member -NotePropertyName $pluginName -NotePropertyValue ([PSCustomObject]@{ options = [PSCustomObject]@{} }) -Force
+        }
+        foreach ($optName in $wantedOptions.PSObject.Properties.Name) {
+            $settings.pluginConfigs.$pluginName.options | Add-Member -NotePropertyName $optName -NotePropertyValue $wantedOptions.$optName -Force
+        }
+    }
+}
+
 # statusLine: resolve the actual installed caveman version instead of hardcoding one
 $statuslineScript = Get-ChildItem "$env:USERPROFILE\.claude\plugins\cache\caveman\caveman\*\src\hooks\caveman-statusline.ps1" -ErrorAction SilentlyContinue |
     Sort-Object FullName -Descending | Select-Object -First 1

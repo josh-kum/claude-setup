@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-23T07:00:39Z",
+  "updated": "2026-09-23T08:02:44Z",
   "marketplaces": {
     "ponytail": { "source": { "source": "github", "repo": "DietrichGebert/ponytail" } },
     "karpathy-skills": { "source": { "source": "github", "repo": "forrestchang/andrej-karpathy-skills" } },
@@ -32,6 +32,14 @@
   "extraInstallCommands": [
     "npx claude-code-templates@1.29.6 --mod productivity/jev-skill-suggestion -d \"$env:USERPROFILE\""
   ],
+  "pluginConfigs": {
+    "note": "jev-skill-suggestion 'inject' MUST stay 'suggest', never 'content'. Code review (2026-09-23) found 'content' injects the picked skill's SKILL.md body directly into the prompt with a 'follow this now' instruction, bypassing the normal Skill-tool gate (skillOverrides, permission checks). It also draws candidates from the current working directory's .claude/skills, so a cloned repo could plant a SKILL.md that gets auto-injected. 'suggest' only names the skill; the real Skill tool loads it with normal checks. Never run /jev-skill-suggestion:setup (hides the skill listing entirely, making the model depend solely on this plugin). Never set typesafeApiKey/gatewayApiKey (that's what sends prompt text externally).",
+    "jev-skill-suggestion": {
+      "options": {
+        "inject": "suggest"
+      }
+    }
+  },
   "envVars": {
     "CLAUDE_MEM_ONLINE_OPTIN": "false",
     "CLAUDE_MEM_TELEGRAM_ENABLED": "false",
