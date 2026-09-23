@@ -52,7 +52,7 @@ foreach ($key in $manifest.expectedVersions.PSObject.Properties.Name) {
         $actual = (Get-ChildItem $installedDir -Directory | Select-Object -First 1).Name
         $expected = $manifest.expectedVersions.$key
         if ($actual -and $actual -ne $expected) {
-            Write-Warning "$key: installed $actual, manifest expects $expected (upstream moved - review before trusting new behavior)"
+            Write-Warning "${key}: installed $actual, manifest expects $expected (upstream moved - review before trusting new behavior)"
         }
     }
 }
