@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-23T12:00:00Z",
+  "updated": "2026-09-23T07:00:39Z",
   "marketplaces": {
     "ponytail": { "source": { "source": "github", "repo": "DietrichGebert/ponytail" } },
     "karpathy-skills": { "source": { "source": "github", "repo": "forrestchang/andrej-karpathy-skills" } },
@@ -21,8 +21,16 @@
   "disabledPlugins": [
     "bkit@bkit-marketplace"
   ],
+  "expectedVersions": {
+    "note": "claude plugin CLI has no ref-pinning flag, so these are the versions resolved at last known-good install. apply.ps1 warns (does not block) if a fresh install lands on a different version.",
+    "ponytail/ponytail": "4.10.0",
+    "caveman/caveman": "2.7.0",
+    "karpathy-skills/andrej-karpathy-skills": "1.0.0",
+    "ui-ux-pro-max-skill/ui-ux-pro-max": "2.13.0",
+    "thedotmack/claude-mem": "13.25.3"
+  },
   "extraInstallCommands": [
-    "npx claude-code-templates@latest --mod productivity/jev-skill-suggestion -d \"$env:USERPROFILE\""
+    "npx claude-code-templates@1.29.6 --mod productivity/jev-skill-suggestion -d \"$env:USERPROFILE\""
   ],
   "envVars": {
     "CLAUDE_MEM_ONLINE_OPTIN": "false",

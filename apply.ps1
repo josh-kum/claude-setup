@@ -43,6 +43,20 @@ foreach ($p in $manifest.disabledPlugins) {
     }
 }
 
+# Version drift check (the plugin CLI has no ref-pinning flag, so this is
+# detect-and-warn, not enforce)
+foreach ($key in $manifest.expectedVersions.PSObject.Properties.Name) {
+    if ($key -eq "note") { continue }
+    $installedDir = "$env:USERPROFILE\.claude\plugins\cache\$key"
+    if (Test-Path $installedDir) {
+        $actual = (Get-ChildItem $installedDir -Directory | Select-Object -First 1).Name
+        $expected = $manifest.expectedVersions.$key
+        if ($actual -and $actual -ne $expected) {
+            Write-Warning "$key: installed $actual, manifest expects $expected (upstream moved - review before trusting new behavior)"
+        }
+    }
+}
+
 # Extra install commands (mods installed outside the plugin marketplace system)
 foreach ($cmd in $manifest.extraInstallCommands) {
     Write-Host "Running: $cmd"
