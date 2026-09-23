@@ -16,7 +16,7 @@ if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     if (Get-Command winget -ErrorAction SilentlyContinue) {
-        Write-Host "git not found — installing via winget..."
+        Write-Host "git not found - installing via winget..."
         winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements
         Write-Host "git installed. Close and reopen this terminal, then re-run bootstrap.ps1." -ForegroundColor Yellow
         exit 0
@@ -27,7 +27,7 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 }
 
 if (Test-Path $repoDir) {
-    Write-Host "Repo already exists at $repoDir — pulling latest..."
+    Write-Host "Repo already exists at $repoDir - pulling latest..."
     Push-Location $repoDir
     git pull
     Pop-Location
