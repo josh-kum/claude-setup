@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-13T04:51:25Z",
+  "updated": "2026-10-13T05:13:40Z",
   "marketplaces": {
     "claude-plugins-official": { "source": { "source": "github", "repo": "anthropics/claude-plugins-official" } },
     "ponytail": { "source": { "source": "github", "repo": "DietrichGebert/ponytail" } },
@@ -24,11 +24,11 @@
   ],
   "expectedVersions": {
     "note": "claude plugin CLI has no ref-pinning flag, so these are the versions resolved at last known-good install. apply.ps1 warns (does not block) if a fresh install lands on a different version.",
-    "ponytail/ponytail": "4.10.0",
-    "caveman/caveman": "2.7.0",
+    "ponytail/ponytail": "5.2.0",
+    "caveman/caveman": "3.2.0",
     "karpathy-skills/andrej-karpathy-skills": "1.0.0",
-    "ui-ux-pro-max-skill/ui-ux-pro-max": "2.13.0",
-    "thedotmack/claude-mem": "13.25.3"
+    "ui-ux-pro-max-skill/ui-ux-pro-max": "2.15.0",
+    "thedotmack/claude-mem": "13.37.0"
   },
   "extraInstallCommands": [
     "npx claude-code-templates@1.29.6 --mod productivity/jev-skill-suggestion -d \"$env:USERPROFILE\"",

@@ -32,3 +32,13 @@ Bug fixed: `apply.ps1` had a PowerShell parse error (`"$key: ..."` ambiguous sco
 - `apply.ps1`: `theme` now set via `Add-Member -Force` (assigning to a missing property would throw on a settings.json without `theme`).
 
 Nothing to do unless you want it: after the user approves, `git pull` then run `apply.ps1`.
+
+## 2026-10-13T05:15:00Z - office PC - third PC setup result + version review
+
+**Third PC (set up via the chat-driven checklist, not the scripts):** done. Reported versions: ponytail 5.2.0, caveman 3.2.0, ui-ux-pro-max 2.15.0, claude-mem 13.37.0. claude-mem cloud fields (`CLOUD_SYNC_TOKEN/USER_ID/HUB_URL`, `PRO_TRIAL_STATE`, `PRO_MEMORY_KEY`, `TELEGRAM_BOT_TOKEN`) verified empty there; Telegram / Grok-bot x2 / CCS-align env vars verified `false`; theme applied. Did not run `npx claude-mem install` or sign into claude-mem's hosted account.
+
+**Version review (those 4 versions == upstream `origin/main` on 2026-10-13):** diffed the previously vetted commit against `origin/main` for each plugin. ui-ux-pro-max: only a version string. ponytail 5.x: hooks changed a lot; added code has no network/exec/eval; new `ponytail-map.js` builds a local function map from `git ls-files` and injects up to ~2000 chars into context each session. caveman 3.x: no network/exec/eval added in hooks or plugin.json. claude-mem 13.37: the 4 feature flags still exist; **hook bundles are minified and were NOT fully reviewed**.
+
+**Correction to earlier note:** `CLAUDE_MEM_ONLINE_OPTIN=false` is only the *installer* flag that skips claude-mem's hosted sign-in (`npx claude-mem install`); it is not a runtime guard. The real guard is the `CLOUD_SYNC_*` / `PRO_*` fields staying empty. Never run that installer or sign into the hosted account.
+
+**manifest.json:** `expectedVersions` now records the versions above (the office PC itself still runs the older ones: ponytail 4.10.0, caveman 2.7.0, ui-ux-pro-max 2.13.0, claude-mem 13.25.3, so its `apply.ps1` will warn about drift until it is updated). Whether to update the office PC to match is the user's decision.
