@@ -21,3 +21,14 @@ Bug fixed: `apply.ps1` had a PowerShell parse error (`"$key: ..."` ambiguous sco
 1. `superpowers`, `frontend-design`, `code-review`, `mattpocock-skills` (all `@claude-plugins-official`) still fail to install on home PC - that marketplace isn't registered there at all (`claude plugin marketplace list` doesn't show it), even after a fresh CLI install and running `claude` interactively once. Office PC has it pre-registered; cause unconfirmed. Not blocking anything else - just deprioritized.
 2. Never run `/jev-skill-suggestion:setup` on either PC (it hides the full skill listing, making the model depend solely on this plugin's judgement) and never set `typesafeApiKey`/`gatewayApiKey` in its config (that's what would send prompt text to an external backend - currently unset on both, using Claude Code's own built-in classifier only).
 3. Consider whether jev-skill-suggestion is worth keeping at all vs. just removing it - the token-savings benefit is real but modest, and it's the one piece of this whole setup with a real (now-mitigated) prompt-injection surface. No decision made either way; revisit if it causes friction.
+
+## 2026-10-13T04:55:00Z - office PC - manifest/bootstrap update (needs your OK to apply on home PC)
+
+**Root cause found for open item #1** (`superpowers`/`frontend-design`/`code-review`/`mattpocock-skills` failing on home PC): `claude-plugins-official` is NOT a hidden built-in. On the office PC it is an ordinary GitHub marketplace (`anthropics/claude-plugins-official`, listed in `~/.claude/plugins/known_marketplaces.json`). I had left it out of `manifest.json`, so `apply.ps1` never registered it on a fresh machine. Now added under `marketplaces`. On home PC, `apply.ps1` (or just `claude plugin marketplace add anthropics/claude-plugins-official`) should fix all four.
+
+**Other changes in this commit:**
+- Context7 MCP added to `extraInstallCommands`, pinned to `@upstash/context7-mcp@4.3.0`, `--scope user`. (It had only been registered in *local* scope for `C:\` on the office PC, i.e. invisible outside that folder - fixed here too.) Uses `cmd /c` because Windows PowerShell 5.1 swallows the `--` separator and `claude` then rejects `-y`.
+- `bootstrap.ps1` rewritten for fresh machines: installs git / Node LTS / Claude Code CLI (official `claude.ai/install.ps1`) if missing, refreshes PATH in-session, runs `apply.ps1` with `-ExecutionPolicy Bypass` for that process only. Wrapped in a function so `return` does not close the user's window under `irm | iex`.
+- `apply.ps1`: `theme` now set via `Add-Member -Force` (assigning to a missing property would throw on a settings.json without `theme`).
+
+Nothing to do unless you want it: after the user approves, `git pull` then run `apply.ps1`.

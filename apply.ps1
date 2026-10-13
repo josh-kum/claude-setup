@@ -78,7 +78,7 @@ $settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
 foreach ($p in $manifest.disabledPlugins) {
     if ($settings.enabledPlugins.PSObject.Properties[$p]) { $settings.enabledPlugins.$p = $false }
 }
-$settings.theme = $manifest.theme
+$settings | Add-Member -NotePropertyName theme -NotePropertyValue $manifest.theme -Force
 
 # Plugin configs (e.g. jev-skill-suggestion's inject mode) - shallow-merge
 # options per plugin so a locally-set option not in the manifest survives.
